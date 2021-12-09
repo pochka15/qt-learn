@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+  <class>TestWidget</class>
+  <widget class="QWidget" name="TestWidget">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>819</width>
+        <height>548</height>
+      </rect>
+    </property>
+    <property name="windowTitle">
+      <string>Form</string>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+        <widget class="QPushButton" name="pushButton">
+          <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="text">
+            <string/>
+          </property>
+          <property name="icon">
+            <iconset>
+              <normaloff>../resources/tick-icon.png</normaloff>../resources/tick-icon.png
+            </iconset>
+          </property>
+        </widget>
+      </item>
+    </layout>
+  </widget>
+  <resources/>
+  <connections/>
+</ui>

@@ -1,0 +1,3 @@
+{
+    "files": ["src/main.py","resources/tick-icon.png","ui/test_widget.ui","ui/mainwindow.ui","resources/tick.qrc"]
+}
