@@ -15,6 +15,17 @@ class Member:
 
 
 @dataclass
+class MemberDto:
+    id: int
+
+    def __str__(self):
+        return "Member " + str(self.id)
+
+    def to_model(self) -> Member:
+        return Member(self.id)
+
+
+@dataclass
 class Room:
     id: int
     name: str
@@ -26,7 +37,21 @@ class Room:
         self.members = members
 
 
+@dataclass
+class RoomDto:
+    id: int
+    name: str
+    members: List[MemberDto]
+
+    def __init__(self, id: int, name: str, members: List[MemberDto]):
+        self.id = id
+        self.name = name
+        self.members = members
+
+
 class RoomsModel(QAbstractListModel):
+    DTO_ROLE = Qt.UserRole + 1
+
     def __init__(self, rooms: List[Room]):
         super().__init__()
         self.rooms = rooms
@@ -34,15 +59,16 @@ class RoomsModel(QAbstractListModel):
     def rowCount(self, parent=None):
         return len(self.rooms)
 
-    def get_room_at_row(self, row: int) -> Room:
-        return self.rooms[row]
-
     def data(self, index: QModelIndex, role=Qt.DisplayRole):
         if role == Qt.SizeHintRole:
             return QSize(253, 40)
         if role == Qt.DisplayRole:
             room = self.rooms[index.row()]
             return room.name
+        if role == RoomsModel.DTO_ROLE:
+            room = self.rooms[index.row()]
+            dtos = [MemberDto(member.id) for member in room.members]
+            return RoomDto(room.id, room.name, dtos)
 
     def removeRows(self, row: int, count: int, parent: QModelIndex = ...) -> bool:
         res = True
@@ -99,10 +125,10 @@ class MembersModel(QAbstractListModel):
             indexes = indexes[amount:]
         return res
 
-    def get_first_matching(self, str_repr: str) -> Member:
+    def get_first_matching(self, str_repr: str) -> MemberDto:
         for member in self.members:
             if str(member) == str_repr:
-                return member
+                return MemberDto(member.id)
 
 
 def count_sequential_numbers(numbers: List[int]):

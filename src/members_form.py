@@ -2,7 +2,7 @@ from PySide2.QtCore import QSortFilterProxyModel, Qt, Slot, QModelIndex
 
 from src.global_state import GlobalState
 from src.mainwindow import Ui_MainWindow
-from src.room import MembersModel, create_random_members
+from src.room import MembersModel, create_random_members, MemberDto
 
 
 class MembersForm:
@@ -35,7 +35,7 @@ class MembersForm:
     @Slot()
     def handle_dropdown_selection_changed(self, ind: QModelIndex):
         # It's a hack, a better way is to think about how to map the index to the index of the source model
-        member = self.members.get_first_matching(ind.data())
+        member: MemberDto = self.members.get_first_matching(ind.data())
         # self.members.remove_by_id(member.id)
         # TODO(@pochka15): think about how to update the current model containing members
         print('Todo: Move member: ', member)

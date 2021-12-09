@@ -7,7 +7,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow)
 from src.global_state import GlobalState
 from src.mainwindow import Ui_MainWindow
 from src.members_form import MembersForm
-from src.room import RoomsModel, MembersModel, create_rooms, Room
+from src.room import RoomsModel, MembersModel, create_rooms, RoomDto
 
 global_state = GlobalState()
 
@@ -53,11 +53,8 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_room_selection_changed(self, ind: QModelIndex):
-        name = ind.data()
-        room = None
-        if name is not None:
-            room = self.rooms_model.get_room_at_row(ind.row())
-        self.members_model.reset([] if room is None else room.members)
+        room: Optional[RoomDto] = ind.data(RoomsModel.DTO_ROLE)
+        self.members_model.reset([] if room is None else [member.to_model() for member in room.members])
         self.ui_handle_room_selection_changed(room)
 
     @Slot()
@@ -65,7 +62,7 @@ class MainWindow(QMainWindow):
         indexes = self.ui.members_view.selectionModel().selectedIndexes()
         self.ui_handle_members_selection_changed(indexes)
 
-    def ui_handle_room_selection_changed(self, room: Optional[Room]):
+    def ui_handle_room_selection_changed(self, room: Optional[RoomDto]):
         if room is None:
             self.ui_reset_members_view()
         else:
